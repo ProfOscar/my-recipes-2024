@@ -1,12 +1,13 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <button class="navbar-toggle">
-                <span class="icon-bar"></span>
+            <button class="navbar-toggle" (click)="collapsed=!collapsed">
+                <span class="icon-bar" *ngFor="let item of [1,2,3]"></span>
             </button>
             <a href="#" class="navbar-brand">Recipe Book</a>
         </div>
-        <div class="navbar-collapse">
+        <div class="navbar-collapse" [class.collapse]="collapsed" 
+                                    (window:resize)="collapsed=true">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Recipes</a></li>
                 <li><a href="#">Shopping List</a></li>
@@ -14,7 +15,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" role="button">
-                        Manage <span class="caret"></span>    
+                        Manage <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="#">Save Data</a></li>
