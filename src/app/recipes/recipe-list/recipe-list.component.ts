@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { IngredientModel } from 'src/app/models/ingredient.model';
 import { RecipeModel } from 'src/app/models/recipe.model';
 
@@ -8,6 +8,8 @@ import { RecipeModel } from 'src/app/models/recipe.model';
   styleUrls: ['./recipe-list.component.css']
 })
 export class RecipeListComponent {
+  @Output() recipeItemSelected = new EventEmitter<RecipeModel>();
+
   recipes: RecipeModel[] = [
     new RecipeModel(
       "Spaghetti alla chitarra",
@@ -42,9 +44,18 @@ export class RecipeListComponent {
           13)
       ])
   ];
+
   selectedRecipe: RecipeModel;
-  
+
   constructor() {
     this.selectedRecipe = this.recipes[0];
+  }
+
+  ngOnInit() {
+    this.recipeItemSelected.emit(this.selectedRecipe);
+  }
+
+  onRecipeItemSelected(recipe: RecipeModel) {
+    this.recipeItemSelected.emit(recipe);
   }
 }
