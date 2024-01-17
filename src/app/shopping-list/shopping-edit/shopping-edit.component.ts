@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { IngredientModel } from 'src/app/models/ingredient.model';
 
 @Component({
@@ -8,6 +8,7 @@ import { IngredientModel } from 'src/app/models/ingredient.model';
 })
 export class ShoppingEditComponent {
   @Output() ingredientAdded = new EventEmitter<IngredientModel>();
+  @ViewChild("txtName") _txtName!: ElementRef;
 
   ingredientName: string = "";
   ingredientAmount: number = 0;
@@ -25,6 +26,7 @@ export class ShoppingEditComponent {
   onClear() {
     this.ingredientName = "";
     this.ingredientAmount = 0;
+    this._txtName.nativeElement.focus();
   }
 
 }
