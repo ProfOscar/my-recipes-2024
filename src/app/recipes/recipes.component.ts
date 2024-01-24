@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RecipeModel } from '../models/recipe.model';
+import { RecipeService } from './recipe.service';
 
 @Component({
   selector: 'app-recipes',
@@ -8,9 +8,6 @@ import { RecipeModel } from '../models/recipe.model';
 })
 export class RecipesComponent {
 
-  selectedRecipe!: RecipeModel;
+  constructor(public recipeService: RecipeService) { }
 
-  onRecipeItemSelected(recipe: RecipeModel) {
-    this.selectedRecipe = recipe;
-  }
 }

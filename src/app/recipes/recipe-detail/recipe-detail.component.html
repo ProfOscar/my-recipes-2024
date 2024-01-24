@@ -16,23 +16,23 @@
 
 <div class="row">
     <div class="col-xs-12">
-        <img [src]="recipe.imagePath" alt="" class="img-responsive">
+        <img [src]="recipeService.selectedRecipe?.imagePath" alt="" class="img-responsive">
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12">
-        <h1>{{ recipe.name }}</h1>
+        <h1>{{ recipeService.selectedRecipe?.name }}</h1>
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12">
-        {{ recipe.description }}
+        {{ recipeService.selectedRecipe?.description }}
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12">
         <h4>Ingredients: </h4>
-        <p class="ingredient" *ngFor="let ingredient of recipe.ingredients">
+        <p class="ingredient" *ngFor="let ingredient of recipeService.selectedRecipe?.ingredients">
             {{ingredient.name}}: {{ingredient.amount}}
         </p>
     </div>
