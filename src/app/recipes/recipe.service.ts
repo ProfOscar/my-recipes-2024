@@ -9,14 +9,18 @@ export class RecipeService {
 
   recipes: RecipeModel[] = [];
   selectedRecipe?: RecipeModel;
+  isFirst: boolean = true;
 
   constructor(private dataStorageService: DataStorageService) { }
 
-  getRecipes():any {
+  getRecipes(): any {
     this.dataStorageService.inviaRichiesta("get", "/recipes")?.subscribe({
       "next": (data) => {
         this.recipes = data;
-        this.selectedRecipe = this.recipes[0];
+        if (this.isFirst) {
+          this.selectedRecipe = this.recipes[0];
+          this.isFirst = false;
+        }
       },
       "error": (error) => {
         console.log(error);
