@@ -1,5 +1,5 @@
 import { createMayBeForwardRefExpression } from '@angular/compiler';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { IngredientModel } from '../models/ingredient.model';
 import { DataStorageService } from '../shared/data-storage.service';
 
@@ -9,6 +9,7 @@ import { DataStorageService } from '../shared/data-storage.service';
 export class ShoppingListService {
 
   ingredients: IngredientModel[] = [];
+  ingredientAdded: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private dataStorageService: DataStorageService) { }
 
@@ -48,6 +49,8 @@ export class ShoppingListService {
     this.dataStorageService.inviaRichiesta("post", "/shopping-list", ingredient)?.subscribe({
       "next": (data) => {
         console.log(data);
+        // alert("Ingredient succesfully added!");
+        this.ingredientAdded.emit("Ingredient succesfully added!");
       },
       "error": (error: any) => {
         console.log(error);
@@ -59,6 +62,7 @@ export class ShoppingListService {
     this.dataStorageService.inviaRichiesta("patch", "/shopping-list/" + id, data)?.subscribe({
       "next": (data) => {
         console.log(data);
+        alert("Ingredient succesfully modified!");
       },
       "error": (error: any) => {
         console.log(error);
