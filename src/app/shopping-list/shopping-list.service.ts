@@ -1,3 +1,4 @@
+import { createMayBeForwardRefExpression } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { IngredientModel } from '../models/ingredient.model';
 import { DataStorageService } from '../shared/data-storage.service';
@@ -26,16 +27,43 @@ export class ShoppingListService {
     let ingredientFound = this.ingredients.find(function (item) {
       return item.name.toLowerCase() == newIngredient.name.toLowerCase();
     })
-    if (!ingredientFound)
+    if (!ingredientFound) {
       this.ingredients.push(newIngredient);
-    else
+      this.postIngredient(newIngredient);
+    }
+    else {
       ingredientFound.amount += newIngredient.amount;
+      let data: any = { "$set": { "amount": ingredientFound.amount } };
+      this.patchIngredient(ingredientFound._id, data);
+    }
   }
 
   addIngredients(ingredients: IngredientModel[]) {
     for (const item of ingredients) {
       this.addIngredient(item);
     }
+  }
+
+  postIngredient(ingredient: IngredientModel) {
+    this.dataStorageService.inviaRichiesta("post", "/shopping-list", ingredient)?.subscribe({
+      "next": (data) => {
+        console.log(data);
+      },
+      "error": (error: any) => {
+        console.log(error);
+      }
+    })
+  }
+
+  patchIngredient(id?: string, data?: any) {
+    this.dataStorageService.inviaRichiesta("patch", "/shopping-list/" + id, data)?.subscribe({
+      "next": (data) => {
+        console.log(data);
+      },
+      "error": (error: any) => {
+        console.log(error);
+      }
+    })
   }
 
 }
