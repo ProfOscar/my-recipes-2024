@@ -4,38 +4,36 @@ import { IngredientModel } from '../models/ingredient.model';
 import { DataStorageService } from '../shared/data-storage.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ShoppingListService {
-
   ingredients: IngredientModel[] = [];
   ingredientAdded: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(private dataStorageService: DataStorageService) { }
+  constructor(private dataStorageService: DataStorageService) {}
 
   getIngredients(): any {
-    this.dataStorageService.inviaRichiesta("get", "/shopping-list")?.subscribe({
-      "next": (data) => {
+    this.dataStorageService.inviaRichiesta('get', '/shopping-list')?.subscribe({
+      next: (data) => {
         this.ingredients = data;
       },
-      "error": (error) => {
+      error: (error) => {
         console.log(error);
-      }
+      },
     });
   }
 
   addIngredient(newIngredient: IngredientModel) {
     let ingredientFound = this.ingredients.find(function (item) {
       return item.name.toLowerCase() == newIngredient.name.toLowerCase();
-    })
+    });
     if (!ingredientFound) {
       this.ingredients.push(newIngredient);
       this.postIngredient(newIngredient);
-    }
-    else {
+    } else {
       ingredientFound.amount += newIngredient.amount;
-      let data: any = { "$set": { "amount": ingredientFound.amount } };
-      this.patchIngredient(ingredientFound._id, data);
+      let data: any = { amount: ingredientFound.amount };
+      this.putIngredient(ingredientFound._id, data);
     }
   }
 
@@ -46,28 +44,32 @@ export class ShoppingListService {
   }
 
   postIngredient(ingredient: IngredientModel) {
-    this.dataStorageService.inviaRichiesta("post", "/shopping-list", ingredient)?.subscribe({
-      "next": (data) => {
-        console.log(data);
-        // alert("Ingredient succesfully added!");
-        this.ingredientAdded.emit("Ingredient succesfully added!");
-      },
-      "error": (error: any) => {
-        console.log(error);
-      }
-    })
+    this.dataStorageService
+      .inviaRichiesta('post', '/shopping-list', ingredient)
+      ?.subscribe({
+        next: (data) => {
+          console.log(data);
+          // alert("Ingredient succesfully added!");
+          this.ingredientAdded.emit('Ingredient successfully added!');
+        },
+        error: (error: any) => {
+          console.log(error);
+        },
+      });
   }
 
-  patchIngredient(id?: string, data?: any) {
-    this.dataStorageService.inviaRichiesta("patch", "/shopping-list/" + id, data)?.subscribe({
-      "next": (data) => {
-        console.log(data);
-        alert("Ingredient succesfully modified!");
-      },
-      "error": (error: any) => {
-        console.log(error);
-      }
-    })
+  putIngredient(id?: string, data?: any) {
+    this.dataStorageService
+      .inviaRichiesta('put', '/shopping-list/' + id, data)
+      ?.subscribe({
+        next: (data) => {
+          console.log(data);
+          //alert('Ingredient successfully modified!');
+          this.ingredientAdded.emit('Ingredient successfully modified!');
+        },
+        error: (error: any) => {
+          console.log(error);
+        },
+      });
   }
-
 }

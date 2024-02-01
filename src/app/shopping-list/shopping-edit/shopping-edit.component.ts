@@ -13,14 +13,18 @@ export class ShoppingEditComponent {
   ingredientName: string = "";
   ingredientAmount: number = 0;
 
-  showIngredientAddedLabel: boolean = false;
-  showIngredientModifiedLabel: boolean = false;
+  showIngredientLabel: boolean = false;
+  ingredientLabel: string = "";
 
   constructor(public shoppingListService: ShoppingListService) { }
 
   ngOnInit() {
     this.shoppingListService.ingredientAdded.subscribe((param: string) => {
-      this.showIngredientAddedLabel = true;
+      this.showIngredientLabel = true;
+      this.ingredientLabel = param;
+      setTimeout(() => {
+        this.showIngredientLabel = false;
+      }, 3000);
     });
   }
 

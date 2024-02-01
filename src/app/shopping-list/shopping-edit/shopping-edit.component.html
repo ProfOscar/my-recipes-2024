@@ -19,8 +19,8 @@
                 <button class="btn btn-primary" type="button" (click)="onClear()">Clear</button>
             </div>
         </div>
-        <div class="row" *ngIf="showIngredientAddedLabel">
-            <div class="col-xs-12">Ingredient Correctly added!</div>
+        <div class="row" *ngIf="showIngredientLabel">
+            <div class="col-xs-12">{{ingredientLabel}}</div>
         </div>
     </div>
 </div>
