@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
+import { IngredientModel } from '../models/ingredient.model';
 import { RecipeModel } from '../models/recipe.model';
 import { DataStorageService } from '../shared/data-storage.service';
+import { ShoppingListService } from '../shopping-list/shopping-list.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,8 @@ export class RecipeService {
   selectedRecipe?: RecipeModel;
   isFirst: boolean = true;
 
-  constructor(private dataStorageService: DataStorageService) { }
+  constructor(private dataStorageService: DataStorageService,
+    private shoppingListService: ShoppingListService) { }
 
   getRecipes(): any {
     this.dataStorageService.inviaRichiesta("get", "/recipes")?.subscribe({
@@ -26,5 +29,9 @@ export class RecipeService {
         console.log(error);
       }
     });
+  }
+
+  addIngredientsToShoppingList(ingredients?:IngredientModel[]) {
+    this.shoppingListService.addIngredients(ingredients);
   }
 }

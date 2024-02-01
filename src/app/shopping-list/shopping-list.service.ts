@@ -37,10 +37,10 @@ export class ShoppingListService {
     }
   }
 
-  addIngredients(ingredients: IngredientModel[]) {
-    for (const item of ingredients) {
-      this.addIngredient(item);
-    }
+  addIngredients(ingredients?: IngredientModel[]) {
+    ingredients?.forEach(element => {
+      this.addIngredient(element);
+    });
   }
 
   postIngredient(ingredient: IngredientModel) {
