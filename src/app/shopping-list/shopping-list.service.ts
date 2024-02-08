@@ -8,7 +8,7 @@ import { DataStorageService } from '../shared/data-storage.service';
 })
 export class ShoppingListService {
   ingredients: IngredientModel[] = [];
-  ingredientAdded: EventEmitter<string> = new EventEmitter<string>();
+  ingredientModified: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private dataStorageService: DataStorageService) {}
 
@@ -50,7 +50,7 @@ export class ShoppingListService {
         next: (data) => {
           console.log(data);
           // alert("Ingredient succesfully added!");
-          this.ingredientAdded.emit('Ingredient successfully added!');
+          this.ingredientModified.emit('Ingredient successfully added!');
         },
         error: (error: any) => {
           console.log(error);
@@ -65,11 +65,27 @@ export class ShoppingListService {
         next: (data) => {
           console.log(data);
           //alert('Ingredient successfully modified!');
-          this.ingredientAdded.emit('Ingredient successfully modified!');
+          this.ingredientModified.emit('Ingredient successfully modified!');
         },
         error: (error: any) => {
           console.log(error);
         },
       });
   }
+
+  deleteIngredient(selectedIngredient: IngredientModel) {
+    this.dataStorageService
+      .inviaRichiesta('delete', '/shopping-list/' + selectedIngredient._id)
+      ?.subscribe({
+        next: (data) => {
+          console.log(data);
+          this.ingredientModified.emit('Ingredient successfully deleted!');
+          this.getIngredients();
+        },
+        error: (error: any) => {
+          console.log(error);
+        },
+      });
+  }
+
 }

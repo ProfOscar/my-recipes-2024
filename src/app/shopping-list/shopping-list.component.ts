@@ -9,11 +9,16 @@ import { ShoppingListService } from './shopping-list.service';
 })
 export class ShoppingListComponent {
 
+  selectedIngredient?: IngredientModel;
 
   constructor(public shoppingListService: ShoppingListService) { }
 
   ngOnInit(): void {
     this.shoppingListService.getIngredients()
+  }
+
+  onIngredientClick(item: IngredientModel) {
+    this.selectedIngredient = item;
   }
 
 }

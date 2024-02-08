@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { IngredientModel } from 'src/app/models/ingredient.model';
 import { ShoppingListService } from '../shopping-list.service';
 
@@ -8,6 +8,7 @@ import { ShoppingListService } from '../shopping-list.service';
   styleUrls: ['./shopping-edit.component.css']
 })
 export class ShoppingEditComponent {
+  @Input() selectedIngredient?: IngredientModel;
   @ViewChild("txtName") _txtName!: ElementRef;
 
   ingredientName: string = "";
@@ -19,7 +20,7 @@ export class ShoppingEditComponent {
   constructor(public shoppingListService: ShoppingListService) { }
 
   ngOnInit() {
-    this.shoppingListService.ingredientAdded.subscribe((param: string) => {
+    this.shoppingListService.ingredientModified.subscribe((param: string) => {
       this.showIngredientLabel = true;
       this.ingredientLabel = param;
       setTimeout(() => {
@@ -35,6 +36,14 @@ export class ShoppingEditComponent {
       const newIngredient: IngredientModel = new IngredientModel(this.ingredientName, this.ingredientAmount);
       this.shoppingListService.addIngredient(newIngredient);
       this.onClear();
+    }
+  }
+
+  onDeleteIngredient() {
+    if (this.selectedIngredient != undefined) {
+      // console.log(this.selectedIngredient.name);
+      this.shoppingListService.deleteIngredient(this.selectedIngredient);
+      this.selectedIngredient = undefined;
     }
   }
 

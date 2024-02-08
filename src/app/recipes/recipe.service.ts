@@ -21,6 +21,7 @@ export class RecipeService {
       "next": (data) => {
         this.recipes = data;
         if (this.isFirst) {
+          this.shoppingListService.getIngredients();
           this.selectedRecipe = this.recipes[0];
           this.isFirst = false;
         }
