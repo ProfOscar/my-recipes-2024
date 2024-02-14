@@ -9,8 +9,6 @@ import { ShoppingListService } from './shopping-list.service';
 })
 export class ShoppingListComponent {
 
-  selectedIngredient?: IngredientModel;
-
   constructor(public shoppingListService: ShoppingListService) { }
 
   ngOnInit(): void {
@@ -18,7 +16,7 @@ export class ShoppingListComponent {
   }
 
   onIngredientClick(item: IngredientModel) {
-    this.selectedIngredient = item;
+    this.shoppingListService.selectedIngredient = item;
   }
 
 }

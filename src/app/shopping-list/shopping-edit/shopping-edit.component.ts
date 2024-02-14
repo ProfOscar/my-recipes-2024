@@ -8,7 +8,6 @@ import { ShoppingListService } from '../shopping-list.service';
   styleUrls: ['./shopping-edit.component.css']
 })
 export class ShoppingEditComponent {
-  @Input() selectedIngredient?: IngredientModel;
   @ViewChild("txtName") _txtName!: ElementRef;
 
   ingredientName: string = "";
@@ -40,10 +39,9 @@ export class ShoppingEditComponent {
   }
 
   onDeleteIngredient() {
-    if (this.selectedIngredient != undefined) {
-      // console.log(this.selectedIngredient.name);
-      this.shoppingListService.deleteIngredient(this.selectedIngredient);
-      this.selectedIngredient = undefined;
+    if (this.shoppingListService.selectedIngredient != undefined) {
+      this.shoppingListService.deleteIngredient(this.shoppingListService.selectedIngredient);
+      this.shoppingListService.selectedIngredient = undefined;
     }
   }
 
@@ -51,6 +49,7 @@ export class ShoppingEditComponent {
     this.ingredientName = "";
     this.ingredientAmount = 0;
     this._txtName.nativeElement.focus();
+    this.shoppingListService.selectedIngredient = undefined;
   }
 
 }

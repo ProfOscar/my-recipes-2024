@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-sm-5 form-group">
                 <label for="name">Name</label>
-                <input #txtName id="name" type="text" class="form-control" [(ngModel)]="ingredientName" value={{selectedIngredient?.name}}>
+                <input #txtName id="name" type="text" class="form-control" [(ngModel)]="ingredientName">
             </div>
             <div class="col-sm-2 form-group">
                 <label for="amount">Amount</label>
@@ -12,12 +12,15 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-sm-3 form-group">
                 <button class="btn btn-success" type="button" [disabled]="ingredientName==''"
                     (click)="onAddIngredient()">Add</button>
+                <button class="btn btn-primary" type="button" (click)="onClear()">Clear</button>
+            </div>
+            <div class="col-sm-5 form-group" *ngIf="shoppingListService.selectedIngredient">
                 <button class="btn btn-danger" type="button"
                     (click)="onDeleteIngredient()">Delete</button>
-                <button class="btn btn-primary" type="button" (click)="onClear()">Clear</button>
+                <input type="text" readonly class="form-control inline" [(ngModel)]="shoppingListService.selectedIngredient.name">
             </div>
         </div>
         <div class="row" *ngIf="showIngredientLabel">

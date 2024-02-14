@@ -10,6 +10,8 @@ export class ShoppingListService {
   ingredients: IngredientModel[] = [];
   ingredientModified: EventEmitter<string> = new EventEmitter<string>();
 
+  selectedIngredient?: IngredientModel;
+
   constructor(private dataStorageService: DataStorageService) {}
 
   getIngredients(): any {
@@ -51,6 +53,7 @@ export class ShoppingListService {
           console.log(data);
           // alert("Ingredient succesfully added!");
           this.ingredientModified.emit('Ingredient successfully added!');
+          this.getIngredients();
         },
         error: (error: any) => {
           console.log(error);
@@ -66,6 +69,7 @@ export class ShoppingListService {
           console.log(data);
           //alert('Ingredient successfully modified!');
           this.ingredientModified.emit('Ingredient successfully modified!');
+          this.getIngredients();
         },
         error: (error: any) => {
           console.log(error);
