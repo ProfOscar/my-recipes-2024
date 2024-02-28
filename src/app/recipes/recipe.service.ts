@@ -32,7 +32,19 @@ export class RecipeService {
     });
   }
 
-  addIngredientsToShoppingList(ingredients?:IngredientModel[]) {
+  getRecipe(id: string) {
+    this.dataStorageService.inviaRichiesta('get', '/recipes/' + id)?.subscribe({
+      "next": (data: any) => {
+        console.log(data);
+        this.selectedRecipe = data;
+      },
+      "error": (error: any) => {
+        console.log(error);
+      }
+    });
+  }
+
+  addIngredientsToShoppingList(ingredients?: IngredientModel[]) {
     this.shoppingListService.addIngredients(ingredients);
   }
 }

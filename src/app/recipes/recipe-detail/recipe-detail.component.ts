@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ShoppingListService } from 'src/app/shopping-list/shopping-list.service';
+import { ActivatedRoute, Params } from '@angular/router';
 import { RecipeService } from '../recipe.service';
 
 @Component({
@@ -9,7 +9,17 @@ import { RecipeService } from '../recipe.service';
 })
 export class RecipeDetailComponent {
 
-  constructor(public recipeService: RecipeService) { }
+  constructor(private route:ActivatedRoute, public recipeService: RecipeService) { }
+
+  ngOnInit() {
+    console.log("RecipeDetailComponent");
+    this.route.params.subscribe(
+      (params: Params) => {
+        console.log("Il parametro è: " + params['id']);
+        this.recipeService.getRecipe(params['id']);
+      }
+    )
+  }
 
   onAddToShoppingList() {
     this.recipeService.addIngredientsToShoppingList(this.recipeService.selectedRecipe?.ingredients);
