@@ -1,10 +1,8 @@
-<app-header (featureSelected)="onNavigate($event)"></app-header>
+<app-header></app-header>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <!-- a regime un solo componente fra recipes e shopping list verrà visualizzato -->
-            <app-recipes *ngIf="isRecipe"></app-recipes>
-            <app-shopping-list *ngIf="!isRecipe"></app-shopping-list>
+            <router-outlet></router-outlet>
         </div>
     </div>
 </div>
