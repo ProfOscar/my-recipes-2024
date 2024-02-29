@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { RecipeService } from '../recipe.service';
 
 @Component({
@@ -8,10 +9,15 @@ import { RecipeService } from '../recipe.service';
 })
 export class RecipeListComponent {
 
-  constructor(public recipeService: RecipeService) { }
+  constructor(private router: Router, public recipeService: RecipeService) { }
 
   ngOnInit() {
     this.recipeService.getRecipes();
+  }
+
+  onNewRecipe() {
+    // this.router.navigate(['/recipes', 'new']);
+    this.router.navigateByUrl('/recipes/new');
   }
 
 }
