@@ -1,4 +1,3 @@
-import { createMayBeForwardRefExpression } from '@angular/compiler';
 import { EventEmitter, Injectable } from '@angular/core';
 import { IngredientModel } from '../models/ingredient.model';
 import { DataStorageService } from '../shared/data-storage.service';

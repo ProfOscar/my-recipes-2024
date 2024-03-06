@@ -47,4 +47,8 @@ export class RecipeService {
   addIngredientsToShoppingList(ingredients?: IngredientModel[]) {
     this.shoppingListService.addIngredients(ingredients);
   }
+
+  addRecipe(recipe:RecipeModel){
+    return this.dataStorageService.inviaRichiesta("post", "/recipes", recipe);
+  }
 }
