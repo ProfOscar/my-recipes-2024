@@ -48,7 +48,13 @@ export class RecipeService {
     this.shoppingListService.addIngredients(ingredients);
   }
 
-  addRecipe(recipe:RecipeModel){
+  addRecipe(recipe: RecipeModel) {
     return this.dataStorageService.inviaRichiesta("post", "/recipes", recipe);
+  }
+
+  patchRecipe(_id: string | undefined, recipe: RecipeModel) {
+    // nel crud server PUT e PATCH hanno logiche diverse
+    // in questo caso usare la PUT
+    return this.dataStorageService.inviaRichiesta("put", `/recipes/${_id}`, recipe);
   }
 }

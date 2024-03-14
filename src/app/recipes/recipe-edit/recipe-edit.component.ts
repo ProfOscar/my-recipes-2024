@@ -16,16 +16,22 @@ export class RecipeEditComponent {
   imageBase64: string = "";
   ingredients: string = "";
 
-  isEdit:boolean = false;
+  isEdit: boolean = false;
 
-  constructor(private activatedRoute:ActivatedRoute, private router: Router, private recipeService: RecipeService) { }
+  constructor(private activatedRoute: ActivatedRoute, private router: Router, private recipeService: RecipeService) { }
 
-  ngOnInit(){
+  ngOnInit() {
     this.activatedRoute.params.subscribe(
-      (params:Params)=>{
+      (params: Params) => {
         this.isEdit = params["id"]
       }
     )
+    if (this.isEdit && this.recipeService.selectedRecipe) {
+      this.name = this.recipeService.selectedRecipe.name;
+      this.description = this.recipeService.selectedRecipe.description;
+      this.imageURL = this.recipeService.selectedRecipe.imagePath;
+      this.ingredients = this.serializeIngredients(this.recipeService.selectedRecipe.ingredients);
+    }
   }
 
   onFileSelected(event: any) {
@@ -36,18 +42,34 @@ export class RecipeEditComponent {
     let ingredientsArray: IngredientModel[] = this.parseIngredients(this.ingredients);
     // console.log(ingredientsArray);
     let recipe = new RecipeModel(this.name, this.description, this.imageURL, ingredientsArray);
-    // ADD
-    this.recipeService.addRecipe(recipe)?.subscribe({
-      "next": (data: any) => {
-        alert("Recipe correctly added!");
-        this.recipeService.getRecipes();
-        this.router.navigateByUrl("/recipes");
-      },
-      "error": (err: any) => {
-        alert("Problems during recipe saving");
-        console.log(err);
-      }
-    })
+    if (this.isEdit) {
+      // EDIT
+      let id: string | undefined = this.recipeService.selectedRecipe?._id;
+      this.recipeService.patchRecipe(id, recipe)?.subscribe({
+        "next": (data: any) => {
+          alert(`Recipe ${id} correctly modified!`);
+          this.recipeService.getRecipes();
+          this.router.navigateByUrl("/recipes/" + id);
+        },
+        "error": (err: any) => {
+          alert("Problems during recipe edit!");
+          console.log(err);
+        }
+      });
+    } else {
+      // ADD
+      this.recipeService.addRecipe(recipe)?.subscribe({
+        "next": (data: any) => {
+          alert("Recipe correctly added!");
+          this.recipeService.getRecipes();
+          this.router.navigateByUrl("/recipes");
+        },
+        "error": (err: any) => {
+          alert("Problems during recipe saving!");
+          console.log(err);
+        }
+      });
+    }
   }
 
   parseIngredients(ingredients: string): IngredientModel[] {
@@ -58,6 +80,14 @@ export class RecipeEditComponent {
         let ausObj = item.split(":");
         retVal.push(new IngredientModel(ausObj[0], parseInt(ausObj[1])));
       }
+    }
+    return retVal;
+  }
+
+  serializeIngredients(ingredients: IngredientModel[]): string {
+    let retVal: string = "";
+    for (const ingredient of ingredients) {
+      retVal += `${ingredient.name}:${ingredient.amount}\n`;
     }
     return retVal;
   }
