@@ -13,7 +13,7 @@ export class RecipeEditComponent {
   name: string = "";
   description: string = "";
   imageURL: string = "";
-  imageBase64: string = "";
+  imageBase64: string | undefined = "";
   ingredients: string = "";
 
   isEdit: boolean = false;
@@ -35,13 +35,21 @@ export class RecipeEditComponent {
   }
 
   onFileSelected(event: any) {
-
+    if (event.target.files && event.target.files[0]) {
+      let image = event.target.files[0];
+      let reader = new FileReader();
+      reader.readAsDataURL(image);
+      reader.onload = () => {
+        this.imageBase64 = reader.result?.toString();
+      }
+    }
   }
 
   onSave() {
+    let img = this.imageURL || this.imageBase64 || this.recipeService.selectedRecipe?.imagePath || "";
     let ingredientsArray: IngredientModel[] = this.parseIngredients(this.ingredients);
     // console.log(ingredientsArray);
-    let recipe = new RecipeModel(this.name, this.description, this.imageURL, ingredientsArray);
+    let recipe = new RecipeModel(this.name, this.description, img, ingredientsArray);
     if (this.isEdit) {
       // EDIT
       let id: string | undefined = this.recipeService.selectedRecipe?._id;
