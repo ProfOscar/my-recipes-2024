@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { NgxSmartModalService } from 'ngx-smart-modal';
 import { RecipeService } from '../recipe.service';
 
 @Component({
@@ -8,8 +9,10 @@ import { RecipeService } from '../recipe.service';
   styleUrls: ['./recipe-detail.component.css']
 })
 export class RecipeDetailComponent {
+  @ViewChild(TemplateRef, { static: false }) tpl!: TemplateRef<any>;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, public recipeService: RecipeService) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, public recipeService: RecipeService,
+    public ngxSmartModalService: NgxSmartModalService, private viewContainerRef: ViewContainerRef) { }
 
   ngOnInit() {
     console.log("RecipeDetailComponent");
@@ -28,6 +31,10 @@ export class RecipeDetailComponent {
   onEditRecipe() {
     // this.router.navigate(['edit'], { relativeTo: this.activatedRoute });
     this.router.navigateByUrl(this.router.url + "/edit");
+  }
+
+  askConfirmToDelete() {
+    this.ngxSmartModalService.create('deleteConfirmModal', this.tpl, this.viewContainerRef).open();
   }
 
   onDeleteRecipe() {

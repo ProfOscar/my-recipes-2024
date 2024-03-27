@@ -8,7 +8,7 @@
             <ul class="dropdown-menu">
                 <li><a (click)="onAddToShoppingList()">To Shopping List</a></li>
                 <li><a (click)="onEditRecipe()">Edit Recipe</a></li>
-                <li><a (click)="onDeleteRecipe()">Delete Recipe</a></li>
+                <li><a (click)="askConfirmToDelete()">Delete Recipe</a></li>
             </ul>
         </div>
     </div>
@@ -37,3 +37,11 @@
         </p>
     </div>
 </div>
+
+<ngx-smart-modal #deleteConfirmModal identifier="deleteConfirmModal">
+    <h1>DELETE RECIPE</h1>
+    <p>Are you sure to delete the recipe {{ recipeService.selectedRecipe?.name }}</p>
+
+    <button (click)="onDeleteRecipe()">Yes</button>
+    <button (click)="deleteConfirmModal.close()">Cancel</button>
+</ngx-smart-modal>
