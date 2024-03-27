@@ -57,4 +57,8 @@ export class RecipeService {
     // in questo caso usare la PUT
     return this.dataStorageService.inviaRichiesta("put", `/recipes/${_id}`, recipe);
   }
+
+  deleteRecipe(_id: string | undefined) {
+    return this.dataStorageService.inviaRichiesta("delete", `/recipes/${_id}`);
+  }
 }

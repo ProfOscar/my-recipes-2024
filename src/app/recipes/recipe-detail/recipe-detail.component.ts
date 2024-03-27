@@ -30,4 +30,18 @@ export class RecipeDetailComponent {
     this.router.navigateByUrl(this.router.url + "/edit");
   }
 
+  onDeleteRecipe() {
+    this.recipeService.deleteRecipe(this.recipeService.selectedRecipe?._id)?.subscribe({
+      "next": (data: any) => {
+        alert("Recipe " + this.recipeService.selectedRecipe?.name + " correctly deleted!");
+        this.recipeService.getRecipes();
+        this.router.navigateByUrl("/recipes");
+      },
+      "error": (err: any) => {
+        alert("Problems during recipe delete!");
+        console.log(err);
+      }
+    });
+  }
+
 }
