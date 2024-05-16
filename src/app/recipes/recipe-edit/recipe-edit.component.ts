@@ -46,7 +46,7 @@ export class RecipeEditComponent {
   }
 
   onSave() {
-    let img = this.imageURL || this.imageBase64 || this.recipeService.selectedRecipe?.imagePath || "";
+    let img = this.imageURL || this.imageBase64 || "";
     let ingredientsArray: IngredientModel[] = this.parseIngredients(this.ingredients);
     // console.log(ingredientsArray);
     let recipe = new RecipeModel(this.name, this.description, img, ingredientsArray);
