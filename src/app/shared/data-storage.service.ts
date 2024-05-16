@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs, addDoc, setDoc, doc, getDoc, deleteDoc } from 'firebase/firestore/lite';
+import { RecipeModel } from '../models/recipe.model';
+import { HttpClient } from '@angular/common/http';
 
 // Firebase configuration from https://console.firebase.google.com/project/profoscar-myrecipes-2024
 const firebaseConfig = {
@@ -16,12 +18,22 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+const BASE_URL = "https://profoscar-myrecipes-2024-default-rtdb.europe-west1.firebasedatabase.app/recipes.json";
+
 @Injectable({
   providedIn: 'root'
 })
 export class DataStorageService {
 
-  constructor() { }
+  constructor(private httpClient: HttpClient) { }
+
+  storeRecipes(recipes: RecipeModel[]) {
+    return this.httpClient.put(BASE_URL, recipes);
+  }
+
+  fetchRecipes() {
+    return this.httpClient.get(BASE_URL);
+  }
 
   public async inviaRichiesta(method: string, resource: string, params: any = {}): Promise<any> {
     let aus = resource.split("/");
